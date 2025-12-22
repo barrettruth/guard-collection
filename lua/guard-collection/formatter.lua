@@ -53,6 +53,12 @@ M.dart = {
   stdin = true,
 }
 
+M.deno_fmt = {
+  cmd = 'deno',
+  args = { 'fmt', '-' },
+  stdin = true,
+}
+
 M.djhtml = {
   cmd = 'djhtml',
   args = { '-' },
