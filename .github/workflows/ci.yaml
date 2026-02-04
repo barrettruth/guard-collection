@@ -215,7 +215,7 @@ jobs:
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/clang/*_spec.lua
+          for f in test/clang/*_spec.lua; do busted --lua nlua "$f"; done
 
   test-haskell:
     runs-on: ubuntu-latest
