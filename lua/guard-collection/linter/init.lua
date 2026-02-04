@@ -3,6 +3,7 @@ return {
   checkmake = require('guard-collection.linter.checkmake'),
   ['clang-tidy'] = require('guard-collection.linter.clang-tidy'),
   codespell = require('guard-collection.linter.codespell'),
+  cpplint = require('guard-collection.linter.cpplint'),
   detekt = require('guard-collection.linter.detekt'),
   eslint = require('guard-collection.linter.eslint'),
   eslint_d = require('guard-collection.linter.eslint_d'),
