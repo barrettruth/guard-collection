@@ -21,4 +21,5 @@ return {
   mypy = require('guard-collection.linter.mypy').mypy,
   mypyc = require('guard-collection.linter.mypy').mypyc,
   dmypy = require('guard-collection.linter.mypy').dmypy,
+  zsh = require('guard-collection.linter.zsh'),
 }
