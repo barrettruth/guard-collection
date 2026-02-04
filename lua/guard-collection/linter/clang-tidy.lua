@@ -2,7 +2,7 @@ local lint = require('guard.lint')
 
 return {
   cmd = 'clang-tidy',
-  args = { '--checks=clang-analyzer-*', '--quiet' },
+  args = { '--quiet' },
   fname = true,
   parse = lint.from_regex({
     source = 'clang-tidy',
