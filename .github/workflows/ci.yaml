@@ -44,8 +44,10 @@ jobs:
           luaVersion: "5.1"
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
+        env:
+          UV_SYSTEM_PYTHON: 1
         run: |
-          uv pip install --system autopep8 black cmake-format codespell cpplint docformatter flake8 isort mypy pylint ruff sqlfluff yapf
+          uv pip install autopep8 black cmake-format codespell cpplint docformatter flake8 isort mypy pylint ruff sqlfluff yapf
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
