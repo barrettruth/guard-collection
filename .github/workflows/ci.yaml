@@ -42,14 +42,7 @@ jobs:
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/formatter/autopep8_spec.lua
-          busted --lua nlua test/formatter/black_spec.lua
-          busted --lua nlua test/formatter/cmake-format_spec.lua
-          busted --lua nlua test/formatter/docformatter_spec.lua
-          busted --lua nlua test/formatter/ruff_spec.lua
-          busted --lua nlua test/formatter/sqlfluff_spec.lua
-          busted --lua nlua test/formatter/yapf_spec.lua
-          busted --lua nlua test/linter/flake8_spec.lua
+          busted --lua nlua test/pip/*_spec.lua
 
   test-npm:
     runs-on: ubuntu-latest
@@ -76,10 +69,7 @@ jobs:
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/formatter/prettier_spec.lua
-          busted --lua nlua test/formatter/biome_spec.lua
-          busted --lua nlua test/formatter/sql-formatter_spec.lua
-          busted --lua nlua test/formatter/taplo_spec.lua
+          busted --lua nlua test/npm/*_spec.lua
 
   test-go:
     runs-on: ubuntu-latest
@@ -109,9 +99,7 @@ jobs:
         run: |
           export PATH="$HOME/go/bin:$PATH"
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/formatter/gofmt_spec.lua
-          busted --lua nlua test/formatter/gofumpt_spec.lua
-          busted --lua nlua test/formatter/golines_spec.lua
+          busted --lua nlua test/go/*_spec.lua
 
   test-rust:
     runs-on: ubuntu-latest
@@ -140,8 +128,7 @@ jobs:
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/formatter/rustfmt_spec.lua
-          busted --lua nlua test/formatter/rustfmt_nightly_spec.lua
+          busted --lua nlua test/rust/*_spec.lua
 
   test-lua:
     runs-on: ubuntu-latest
@@ -173,9 +160,7 @@ jobs:
         run: |
           export PATH="$HOME/.local/bin:$PATH"
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/formatter/stylua_spec.lua
-          busted --lua nlua test/linter/luacheck_spec.lua
-          busted --lua nlua test/linter/selene_spec.lua
+          busted --lua nlua test/lua/*_spec.lua
 
   test-binary:
     runs-on: ubuntu-latest
@@ -206,11 +191,7 @@ jobs:
         run: |
           export PATH="$HOME/.local/bin:$PATH"
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/formatter/alejandra_spec.lua
-          busted --lua nlua test/formatter/buf_spec.lua
-          busted --lua nlua test/formatter/deno_fmt_spec.lua
-          busted --lua nlua test/formatter/latexindent_spec.lua
-          busted --lua nlua test/linter/checkmake_spec.lua
+          busted --lua nlua test/binary/*_spec.lua
 
   test-clang:
     runs-on: ubuntu-latest
@@ -234,8 +215,7 @@ jobs:
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/formatter/clang-format_spec.lua
-          busted --lua nlua test/linter/clang-tidy_spec.lua
+          busted --lua nlua test/clang/*_spec.lua
 
   test-haskell:
     runs-on: ubuntu-latest
@@ -270,4 +250,4 @@ jobs:
         run: |
           export PATH="$HOME/.cabal/bin:$PATH"
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/linter/hlint_spec.lua
+          busted --lua nlua test/haskell/*_spec.lua
