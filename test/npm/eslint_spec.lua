@@ -5,6 +5,10 @@ describe('eslint', function()
     local ft = require('guard.filetype')
     ft('javascript'):lint('eslint')
 
+    vim.fn.mkdir('/tmp/guard-test', 'p')
+    local config = [[export default [{ rules: { 'no-unused-vars': 'error' } }]]]
+    vim.fn.writefile({ config }, '/tmp/guard-test/eslint.config.js')
+
     local buf, diagnostics = helper.test_with('javascript', {
       [[var x = 1]],
     })
