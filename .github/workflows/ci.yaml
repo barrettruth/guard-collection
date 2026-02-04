@@ -47,7 +47,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          pip install -q autopep8 black cmake-format cpplint docformatter flake8 ruff sqlfluff yapf
+          pip install -q autopep8 black cmake-format codespell cpplint docformatter flake8 isort mypy pylint ruff sqlfluff yapf
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
@@ -74,7 +74,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          npm install -g prettier @biomejs/biome sql-formatter @taplo/cli
+          npm install -g eslint prettier @biomejs/biome sql-formatter @taplo/cli
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
@@ -189,7 +189,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          sudo apt-get install -y zsh
+          sudo apt-get install -y zsh jq shellcheck
           luarocks install busted --local
           luarocks install nlua --local
           mkdir -p $HOME/.local/bin
@@ -200,6 +200,8 @@ jobs:
           wget -q https://github.com/denoland/deno/releases/download/v2.1.4/deno-x86_64-unknown-linux-gnu.zip && unzip -q deno-x86_64-unknown-linux-gnu.zip && chmod +x deno
           wget -q https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux -O latexindent && chmod +x latexindent
           wget -q https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip && unzip -q swiftformat_linux.zip && mv swiftformat_linux swiftformat && chmod +x swiftformat
+          wget -q https://github.com/mvdan/sh/releases/download/v3.8.0/shfmt_v3.8.0_linux_amd64 -O shfmt && chmod +x shfmt
+          wget -q https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -O hadolint && chmod +x hadolint
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
