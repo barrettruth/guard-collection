@@ -16,11 +16,12 @@ describe('luacheck', function()
     assert.are.same({
       {
         bufnr = buf,
+        code = '113',
         col = 0,
-        end_col = 0,
+        end_col = 4,
         end_lnum = 4,
         lnum = 4,
-        message = "accessing undefined variable 'U'[113]",
+        message = "accessing undefined variable 'U'",
         namespace = ns,
         severity = 2,
         source = 'luacheck',

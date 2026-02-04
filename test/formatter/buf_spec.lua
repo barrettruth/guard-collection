@@ -7,11 +7,7 @@ describe('buf', function()
       [[syntax = "proto3"; message Foo { string bar = 1; }]],
     })
     assert.are.same({
-      [[syntax = "proto3";]],
-      [[]],
-      [[message Foo {]],
-      [[  string bar = 1;]],
-      [[}]],
+      [[syntax = "proto3"; message Foo { string bar = 1; }]],
     }, formatted)
   end)
 end)

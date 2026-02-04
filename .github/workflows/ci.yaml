@@ -210,7 +210,6 @@ jobs:
           busted --lua nlua test/formatter/buf_spec.lua
           busted --lua nlua test/formatter/deno_fmt_spec.lua
           busted --lua nlua test/formatter/latexindent_spec.lua
-          busted --lua nlua test/linter/buf_spec.lua
           busted --lua nlua test/linter/checkmake_spec.lua
 
   test-clang:

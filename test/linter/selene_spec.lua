@@ -11,11 +11,12 @@ describe('selene', function()
     assert.are.same({
       {
         bufnr = buf,
+        code = 'undefined_variable',
         col = 6,
-        end_col = 0,
+        end_col = 6,
         end_lnum = 0,
         lnum = 0,
-        message = '`a` is not defined[undefined_variable]',
+        message = '`a` is not defined',
         namespace = ns,
         severity = 1,
         source = 'selene',
