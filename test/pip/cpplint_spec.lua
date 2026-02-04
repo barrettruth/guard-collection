@@ -1,6 +1,6 @@
 describe('cpplint', function()
   it('can lint', function()
-    local helper = require('test.linter.helper')
+    local helper = require('test.lint_helper')
     local ns = helper.namespace
     local ft = require('guard.filetype')
     ft('cpp'):lint('cpplint')
