@@ -27,7 +27,10 @@ function M.test_with(ft, input)
 end
 
 function M.assert_diagnostics(actual, expected)
-  assert(#expected == #actual, 'Diagnostic count mismatch: expected ' .. #expected .. ', got ' .. #actual)
+  assert(
+    #expected == #actual,
+    'Diagnostic count mismatch: expected ' .. #expected .. ', got ' .. #actual
+  )
   for _, exp in ipairs(expected) do
     local found = false
     for _, act in ipairs(actual) do
