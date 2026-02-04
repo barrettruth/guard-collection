@@ -1,0 +1,24 @@
+describe('sql-formatter', function()
+  it('can format', function()
+    local ft = require('guard.filetype')
+    ft('sql'):fmt('sql-formatter')
+
+    local formatted = require('test.fmt_helper').test_with('sql', {
+      [[SELECT          *]],
+      [[FROM]],
+      [[World]],
+      [[WHERE   "Someone"]],
+      [[        LIKE     '%YOU%']],
+    })
+    assert.are.same({
+      [[SELECT]],
+      [[  *]],
+      [[FROM]],
+      [[  World]],
+      [[WHERE]],
+      [[  "Someone" LIKE '%YOU%']],
+      -- /> no results!
+      -- /> :sob
+    }, formatted)
+  end)
+end)
