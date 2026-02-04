@@ -1,18 +1,9 @@
 local lint = require('guard.lint')
 
 return {
-  fn = function(_, fname)
-    local co = assert(coroutine.running())
-    vim.system({
-      'clang-tidy',
-      '--quiet',
-      fname,
-      '--',
-    }, {}, function(result)
-      coroutine.resume(co, result.stdout or '')
-    end)
-    return coroutine.yield()
-  end,
+  cmd = 'clang-tidy',
+  args = { '--quiet' },
+  fname = true,
   parse = lint.from_regex({
     source = 'clang-tidy',
     regex = ':(%d+):(%d+):%s+(%w+):%s+(.-)%s+%[(.-)%]',

@@ -2,9 +2,8 @@ local lint = require('guard.lint')
 
 return {
   cmd = 'flake8',
-  args = { '--format', 'default', '--stdin-display-name' },
+  args = { '--format', 'default', '-' },
   stdin = true,
-  fname = true,
   parse = lint.from_regex({
     source = 'flake8',
     regex = ':(%d+):(%d+):%s(%a)(%w+) (.+)',
