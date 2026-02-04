@@ -6,7 +6,6 @@ describe('cpplint', function()
     ft('cpp'):lint('cpplint')
 
     local buf, diagnostics = helper.test_with('cpp', {
-      [[// Copyright 2026 Test]],
       [[int main(){int x=1;}]],
     })
     assert.are.same({
@@ -14,8 +13,8 @@ describe('cpplint', function()
         bufnr = buf,
         col = 0,
         end_col = 0,
-        end_lnum = 1,
-        lnum = 1,
+        end_lnum = 0,
+        lnum = 0,
         message = '[whitespace/operators] Missing spaces around =',
         namespace = ns,
         severity = 1,
@@ -25,8 +24,8 @@ describe('cpplint', function()
         bufnr = buf,
         col = 0,
         end_col = 0,
-        end_lnum = 1,
-        lnum = 1,
+        end_lnum = 0,
+        lnum = 0,
         message = '[whitespace/braces] Missing space before {',
         namespace = ns,
         severity = 1,
