@@ -185,7 +185,7 @@ jobs:
           wget -q https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 -O checkmake && chmod +x checkmake
           wget -q https://github.com/denoland/deno/releases/download/v2.1.4/deno-x86_64-unknown-linux-gnu.zip && unzip -q deno-x86_64-unknown-linux-gnu.zip && chmod +x deno
           wget -q https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux -O latexindent && chmod +x latexindent
-          wget -q https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip && unzip -q swiftformat_linux.zip && chmod +x swiftformat
+          wget -q https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip && unzip -q swiftformat_linux.zip && mv swiftformat_linux swiftformat && chmod +x swiftformat
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
