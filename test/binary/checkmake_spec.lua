@@ -9,18 +9,7 @@ describe('checkmake', function()
       [[all:]],
       [[\techo hello]],
     })
-    assert.are.same({
-      {
-        bufnr = buf,
-        col = 0,
-        end_col = 0,
-        end_lnum = 1,
-        lnum = 1,
-        message = '[phonydeclared] Target "all" should be declared PHONY.',
-        namespace = ns,
-        severity = 2,
-        source = 'checkmake',
-      },
+    helper.assert_diagnostics(diagnostics, {
       {
         bufnr = buf,
         col = 0,
@@ -54,6 +43,17 @@ describe('checkmake', function()
         severity = 2,
         source = 'checkmake',
       },
-    }, diagnostics)
+      {
+        bufnr = buf,
+        col = 0,
+        end_col = 0,
+        end_lnum = 1,
+        lnum = 1,
+        message = '[phonydeclared] Target "all" should be declared PHONY.',
+        namespace = ns,
+        severity = 2,
+        source = 'checkmake',
+      },
+    })
   end)
 end)

@@ -26,4 +26,18 @@ function M.test_with(ft, input)
   return bufnr, diagnostics
 end
 
+function M.assert_diagnostics(actual, expected)
+  assert.are.equal(#expected, #actual, 'Diagnostic count mismatch')
+  for _, exp in ipairs(expected) do
+    local found = false
+    for _, act in ipairs(actual) do
+      if vim.deep_equal(exp, act) then
+        found = true
+        break
+      end
+    end
+    assert(found, 'Expected diagnostic not found: ' .. vim.inspect(exp))
+  end
+end
+
 return M
