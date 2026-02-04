@@ -6,16 +6,16 @@ describe('buf', function()
     ft('proto'):lint('buf')
 
     local buf, diagnostics = helper.test_with('proto', {
-      [[syntax = "proto3"; message Foo { string bar = 1 }]],
+      [[invalid proto content]],
     })
     assert.are.same({
       {
         bufnr = buf,
-        col = 48,
-        end_col = 48,
+        col = 0,
+        end_col = 0,
         end_lnum = 0,
         lnum = 0,
-        message = "syntax error: expecting ';'",
+        message = 'syntax error: unexpected identifier',
         namespace = ns,
         severity = 4,
         source = 'buf',

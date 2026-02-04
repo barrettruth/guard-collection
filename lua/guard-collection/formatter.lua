@@ -320,7 +320,7 @@ M.biome = {
 M.buf = {
   cmd = 'buf',
   args = { 'format' },
-  stdin = true,
+  fname = true,
 }
 
 M.xmllint = {
