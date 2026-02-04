@@ -27,6 +27,18 @@ describe('clang-tidy', function()
         severity = 2,
         source = 'clang-tidy',
       },
+      {
+        bufnr = buf,
+        code = 'clang-analyzer-core.DivideZero',
+        col = 19,
+        end_col = 4,
+        end_lnum = 4,
+        lnum = 4,
+        message = 'Division by zero',
+        namespace = ns,
+        severity = 2,
+        source = 'clang-tidy',
+      },
     }, diagnostics)
   end)
 end)
