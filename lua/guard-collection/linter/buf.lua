@@ -1,19 +1,8 @@
-local lint = require('guard.lint')
-
 return {
-  fn = function(_, fname)
-    local co = assert(coroutine.running())
-    vim.system({
-      'buf',
-      'lint',
-      '--error-format=json',
-      fname .. '#format=protofile',
-    }, {}, function(result)
-      coroutine.resume(co, result.stdout or '')
-    end)
-    return coroutine.yield()
-  end,
-  parse = lint.from_json({
+  cmd = 'buf',
+  args = { 'lint', '--error-format=json' },
+  fname = true,
+  parse = require('guard.lint').from_json({
     lines = true,
     attributes = {
       lnum = 'start_line',
