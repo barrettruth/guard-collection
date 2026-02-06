@@ -210,6 +210,8 @@ jobs:
           wget -q https://github.com/detekt/detekt/releases/download/v1.23.7/detekt-cli-1.23.7-all.jar && printf '#!/bin/sh\njava -jar %s/detekt-cli-1.23.7-all.jar "$@"\n' "$HOME/.local/bin" > detekt && chmod +x detekt
           wget -q https://repo1.maven.org/maven2/com/facebook/ktfmt/0.52/ktfmt-0.52-jar-with-dependencies.jar && printf '#!/bin/sh\njava -jar %s/ktfmt-0.52-jar-with-dependencies.jar "$@"\n' "$HOME/.local/bin" > ktfmt && chmod +x ktfmt
           wget -q https://github.com/dprint/dprint/releases/download/0.49.0/dprint-x86_64-unknown-linux-gnu.zip && unzip -q dprint-x86_64-unknown-linux-gnu.zip -d . && chmod +x dprint
+          wget -q https://github.com/ndmitchell/hlint/releases/download/v3.10/hlint-3.10-x86_64-linux.tar.gz -O hlint.tar.gz && tar xzf hlint.tar.gz hlint-3.10/hlint --strip-components=1 && chmod +x hlint && rm hlint.tar.gz
+          wget -q https://github.com/tweag/ormolu/releases/download/0.8.0.2/ormolu-x86_64-linux.zip && unzip -q ormolu-x86_64-linux.zip && chmod +x ormolu
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
@@ -241,42 +243,6 @@ jobs:
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
           for f in test/clang/*_spec.lua; do busted --lua nlua "$f"; done
-
-  test-haskell:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
-      - uses: haskell-actions/setup@v2
-        with:
-          ghc-version: '9.8'
-          cabal-version: latest
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cabal
-          key: cabal-${{ runner.os }}-9.8-hlint
-          restore-keys: cabal-${{ runner.os }}-9.8-
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
-      - name: Install tools
-        run: |
-          cabal update
-          cabal install hlint --overwrite-policy=always
-          cabal install ormolu --overwrite-policy=always
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
-      - name: Run tests
-        run: |
-          export PATH="$HOME/.cabal/bin:$PATH"
-          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/haskell/*_spec.lua
 
   test-dotnet:
     runs-on: ubuntu-latest
