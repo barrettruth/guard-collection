@@ -34,7 +34,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          pip install -q autopep8 black cmake-format codespell cpplint djhtml docformatter flake8 isort mdformat pylint ruff sqlfluff yamlfix yapf
+          pip install -q autopep8 black cmake-format codespell cpplint djhtml docformatter flake8 isort mdformat mypy pylint ruff sqlfluff yamlfix yapf
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
