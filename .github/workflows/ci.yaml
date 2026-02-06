@@ -61,7 +61,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          npm install -g prettier @biomejs/biome sql-formatter @taplo/cli eslint eslint_d stylelint
+          npm install -g prettier @fsouza/prettierd @biomejs/biome sql-formatter @taplo/cli eslint eslint_d stylelint
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
