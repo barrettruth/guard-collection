@@ -21,7 +21,7 @@ describe('mypyc', function()
     assert.is_true(#diagnostics > 0)
     for _, d in ipairs(diagnostics) do
       assert.equal(bufnr, d.bufnr)
-      assert.equal('mypyc', d.source)
+      assert.equal('mypy', d.source)
       assert.is_number(d.lnum)
       assert.is_string(d.message)
     end
