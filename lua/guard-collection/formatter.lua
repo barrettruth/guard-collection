@@ -48,8 +48,8 @@ M.cljfmt = {
 }
 
 M.csharpier = {
-  cmd = 'dotnet-csharpier',
-  args = { '--write-stdout' },
+  cmd = 'csharpier',
+  args = { 'format', '--write-stdout' },
   stdin = true,
 }
 
