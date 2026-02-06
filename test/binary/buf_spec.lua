@@ -1,16 +1,11 @@
 describe('buf', function()
   it('can format', function()
-    local tmpfile = '/tmp/guard-buf-fmt.proto'
-    local input = {
+    local formatted = require('test.helper').run_fmt('buf', 'proto', {
       'syntax="proto3";',
       'package test;',
       'message Foo{string bar=1;}',
-    }
-    vim.fn.writefile(input, tmpfile)
-    local result = vim.system({ 'buf', 'format', tmpfile }):wait()
-    assert(result.code == 0, 'buf exited ' .. result.code .. ': ' .. (result.stderr or ''))
-    local formatted = vim.split(result.stdout, '\n', { trimempty = true })
-    assert.is_true(#formatted > #input)
+    })
+    assert.is_true(#formatted > 3)
   end)
 
   it('can lint', function()

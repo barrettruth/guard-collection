@@ -23,6 +23,7 @@ describe('eslint_d', function()
         tmpfile,
       }, {
         stdin = table.concat(input, '\n') .. '\n',
+        cwd = tmpdir,
       })
       :wait()
     local output = result.stdout or ''
@@ -53,6 +54,7 @@ describe('eslint_d', function()
     local result = vim
       .system(cmd, {
         stdin = table.concat(input, '\n') .. '\n',
+        cwd = tmpdir,
       })
       :wait()
     assert(result.code == 0, 'eslint_d exited ' .. result.code .. ': ' .. (result.stderr or ''))

@@ -23,6 +23,7 @@ describe('stylelint', function()
         tmpfile,
       }, {
         stdin = table.concat(input, '\n') .. '\n',
+        cwd = tmpdir,
       })
       :wait()
     local output = result.stdout or ''
