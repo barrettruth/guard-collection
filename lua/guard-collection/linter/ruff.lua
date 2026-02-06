@@ -3,8 +3,8 @@ local lint = require('guard.lint')
 return {
   cmd = 'ruff',
   args = {
+    'check',
     '-n',
-    '-e',
     '--output-format',
     'json',
     '-',

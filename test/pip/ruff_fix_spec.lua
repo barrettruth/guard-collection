@@ -1,6 +1,6 @@
 describe('ruff_fix', function()
   it('can format', function()
-    local formatted = require('test.helper').run_fmt('ruff_fix', 'python', {
+    local formatted = require('test.helper').run_fmt('ruff_fix', 'py', {
       [[import os]],
       [[import sys]],
       [[]],

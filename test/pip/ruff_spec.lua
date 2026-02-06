@@ -22,7 +22,7 @@ describe('ruff', function()
 
   it('can lint', function()
     local helper = require('test.helper')
-    local buf, diagnostics = helper.run_lint('ruff', 'python', {
+    local buf, diagnostics = helper.run_lint('ruff', 'py', {
       [[import os]],
       [[x = 1]],
     })

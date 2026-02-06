@@ -6,7 +6,7 @@ describe('fish_indent', function()
       [[end]],
     })
     assert.are.same({
-      [[if test "$x" = "y"]],
+      [[if test "$x" = y]],
       [[    echo hello]],
       [[end]],
     }, formatted)

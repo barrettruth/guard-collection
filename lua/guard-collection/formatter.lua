@@ -299,8 +299,7 @@ M.ruff = {
 
 M.ruff_fix = {
   cmd = 'ruff',
-  args = { '--fix', '-', '--stdin-filename' },
-  stdin = true,
+  args = { 'check', '--fix' },
   fname = true,
 }
 
