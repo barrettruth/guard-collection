@@ -309,6 +309,7 @@ jobs:
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
         run: |
+          export PATH="$HOME/.dotnet/tools:$PATH"
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
           busted --lua nlua test/dotnet/*_spec.lua
 
@@ -425,7 +426,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          nix-env -iA nixpkgs.nixfmt-rfc-style
+          nix profile install nixpkgs#nixfmt-rfc-style
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
