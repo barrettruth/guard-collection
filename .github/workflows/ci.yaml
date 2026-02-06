@@ -17,6 +17,21 @@ jobs:
           version: 2.0.2
           args: --check .
 
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+      - name: Clone guard.nvim
+        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+      - name: Check test coverage
+        run: |
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          nvim -l scripts/coverage.lua
+
   test-pip:
     runs-on: ubuntu-latest
     steps:
