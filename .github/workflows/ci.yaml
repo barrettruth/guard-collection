@@ -176,6 +176,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
+          sudo apt-get install -y zsh
           luarocks install busted --local
           luarocks install nlua --local
           mkdir -p $HOME/.local/bin
