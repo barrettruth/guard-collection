@@ -34,7 +34,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          pip install -q autopep8 black cmake-format cpplint docformatter flake8 ruff sqlfluff yapf
+          pip install -q autopep8 black cmake-format codespell cpplint djhtml docformatter flake8 isort mdformat pylint ruff sqlfluff yamlfix yapf
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
@@ -176,7 +176,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          sudo apt-get install -y zsh
+          sudo apt-get install -y zsh jq libxml2-utils
           luarocks install busted --local
           luarocks install nlua --local
           mkdir -p $HOME/.local/bin
@@ -185,7 +185,9 @@ jobs:
           wget -q https://github.com/bufbuild/buf/releases/download/v1.47.2/buf-Linux-x86_64 -O buf && chmod +x buf
           wget -q https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 -O checkmake && chmod +x checkmake
           wget -q https://github.com/denoland/deno/releases/download/v2.1.4/deno-x86_64-unknown-linux-gnu.zip && unzip -q deno-x86_64-unknown-linux-gnu.zip && chmod +x deno
+          wget -q https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -O hadolint && chmod +x hadolint
           wget -q https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux -O latexindent && chmod +x latexindent
+          wget -q https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_amd64 -O shfmt && chmod +x shfmt
           wget -q https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip && unzip -q swiftformat_linux.zip && mv swiftformat_linux swiftformat && chmod +x swiftformat
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
