@@ -1,9 +1,9 @@
 local skip = {
-  'lsp',
-  'prettierd',
-  'dmypy',
-  'npm_groovy_lint',
-  'npm_groovy_lint_fix',
+  lsp = 'requires a running language server',
+  prettierd = 'daemon-based; no single-shot invocation',
+  dmypy = 'mypy daemon mode; requires persistent server',
+  npm_groovy_lint = 'CodeNarc server warm-up hangs CI',
+  npm_groovy_lint_fix = 'CodeNarc server warm-up hangs CI',
 }
 
 local formatters = require('guard-collection.formatter')
@@ -11,12 +11,12 @@ local linters = require('guard-collection.linter')
 
 local all_tools = {}
 for name in pairs(formatters) do
-  if not vim.tbl_contains(skip, name) then
+  if not skip[name] then
     all_tools[name] = 'formatter'
   end
 end
 for name in pairs(linters) do
-  if not vim.tbl_contains(skip, name) then
+  if not skip[name] then
     all_tools[name] = all_tools[name] and 'formatter+linter' or 'linter'
   end
 end
@@ -44,7 +44,7 @@ end
 table.sort(missing)
 
 local total = vim.tbl_count(all_tools)
-local skipped = #skip
+local skipped = vim.tbl_count(skip)
 local covered_count = vim.tbl_count(covered)
 local missing_count = #missing
 
