@@ -1,7 +1,6 @@
 local skip = {
   'lsp',
   'prettierd',
-  'mypyc',
   'dmypy',
   'npm_groovy_lint',
   'npm_groovy_lint_fix',
