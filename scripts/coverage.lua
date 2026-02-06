@@ -1,6 +1,5 @@
 local skip = {
   lsp = 'requires a running language server',
-  prettierd = 'daemon-based; no single-shot invocation',
   dmypy = 'mypy daemon mode; requires persistent server',
   npm_groovy_lint = 'CodeNarc server warm-up hangs CI',
   npm_groovy_lint_fix = 'CodeNarc server warm-up hangs CI',
