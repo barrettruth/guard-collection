@@ -65,6 +65,10 @@ end)
   # also requires guard.nvim cloned: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
   make test-pip  # or whichever category
   ```
+- Verify test coverage passes (CI enforces this):
+  ```shell
+  make coverage
+  ```
 - Format with stylua before submitting:
   ```shell
   stylua .
