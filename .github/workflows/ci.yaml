@@ -173,6 +173,10 @@ jobs:
         with:
           neovim: true
           version: nightly
+      - uses: dart-lang/setup-dart@v1
+      - uses: mlugg/setup-zig@v2
+        with:
+          version: 0.15.2
       - uses: leso-kn/gh-actions-lua@master
         with:
           luaVersion: "5.1"
@@ -194,8 +198,10 @@ jobs:
           wget -q https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux -O latexindent && chmod +x latexindent
           wget -q https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_amd64 -O shfmt && chmod +x shfmt
           wget -q https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip && unzip -q swiftformat_linux.zip && mv swiftformat_linux swiftformat && chmod +x swiftformat
-          wget -q https://github.com/lukas-reineke/cbfmt/releases/download/v0.2.0/cbfmt_linux-x86_64_v0.2.0.tar.gz -O cbfmt.tar.gz && tar xzf cbfmt.tar.gz && chmod +x cbfmt && rm cbfmt.tar.gz
+          wget -q https://github.com/lukas-reineke/cbfmt/releases/download/v0.2.0/cbfmt_linux-x86_64_v0.2.0.tar.gz -O cbfmt.tar.gz && tar xzf cbfmt.tar.gz -C . cbfmt_linux-x86_64_v0.2.0/cbfmt --strip-components=1 && chmod +x cbfmt && rm cbfmt.tar.gz
           wget -q https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint && chmod +x ktlint
+          wget -q https://github.com/google/google-java-format/releases/download/v1.34.1/google-java-format-1.34.1-all-deps.jar && printf '#!/bin/sh\njava -jar %s/google-java-format-1.34.1-all-deps.jar "$@"\n' "$HOME/.local/bin" > google-java-format && chmod +x google-java-format
+          wget -q https://github.com/tombi-toml/tombi/releases/download/v0.7.27/tombi-cli-0.7.27-x86_64-unknown-linux-musl.gz -O tombi.gz && gunzip tombi.gz && chmod +x tombi
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
