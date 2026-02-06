@@ -4,7 +4,8 @@ describe('dprint', function()
     vim.fn.mkdir(tmpdir, 'p')
     vim.fn.writefile({
       '{',
-      '  "typescript": {}',
+      '  "typescript": {},',
+      '  "plugins": ["https://plugins.dprint.dev/typescript-0.93.3.wasm"]',
       '}',
     }, tmpdir .. '/dprint.json')
     local input = {

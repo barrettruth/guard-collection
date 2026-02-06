@@ -303,13 +303,13 @@ jobs:
       - name: Install tools
         run: |
           dotnet tool install -g csharpier
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
         run: |
-          export PATH="$HOME/.dotnet/tools:$PATH"
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
           busted --lua nlua test/dotnet/*_spec.lua
 
