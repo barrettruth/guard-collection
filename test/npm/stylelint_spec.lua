@@ -3,9 +3,10 @@ describe('stylelint', function()
     local linter = require('test.helper').get_linter('stylelint')
     local tmpdir = '/tmp/stylelint-test'
     vim.fn.mkdir(tmpdir, 'p')
+    local configfile = tmpdir .. '/.stylelintrc.json'
     vim.fn.writefile({
       '{ "rules": { "color-no-invalid-hex": true } }',
-    }, tmpdir .. '/.stylelintrc.json')
+    }, configfile)
     local tmpfile = tmpdir .. '/test.css'
     local input = {
       [[a { color: #fff1az; }]],
@@ -21,12 +22,18 @@ describe('stylelint', function()
         '--stdin',
         '--stdin-filename',
         tmpfile,
+        '--config',
+        configfile,
       }, {
         stdin = table.concat(input, '\n') .. '\n',
         cwd = tmpdir,
       })
       :wait()
     local output = result.stdout or ''
+    if output == '' then
+      output = result.stderr or ''
+    end
+    assert(output ~= '', 'stylelint: no output (code=' .. result.code .. ')')
     local diagnostics = linter.parse(output, bufnr)
     assert.is_true(#diagnostics > 0)
     for _, d in ipairs(diagnostics) do
