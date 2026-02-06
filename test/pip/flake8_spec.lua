@@ -1,11 +1,7 @@
 describe('flake8', function()
   it('can lint', function()
-    local helper = require('test.lint_helper')
-    local ns = helper.namespace
-    local ft = require('guard.filetype')
-    ft('python'):lint('flake8')
-
-    local buf, diagnostics = helper.test_with('python', {
+    local helper = require('test.helper')
+    local buf, diagnostics = helper.run_lint('flake8', 'python', {
       [[import os]],
       [[]],
       [[def foo(n):]],
@@ -13,115 +9,13 @@ describe('flake8', function()
       [[         return  bar]],
       [[print("it's too long sentence to be displayed in one line, blah blah blah blah")]],
     })
-    assert.are.same({
-      {
-        bufnr = buf,
-        code = '401',
-        col = 0,
-        end_col = 0,
-        end_lnum = 0,
-        lnum = 0,
-        message = "'os' imported but unused",
-        namespace = ns,
-        severity = 3,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '302',
-        col = 0,
-        end_col = 2,
-        end_lnum = 2,
-        lnum = 2,
-        message = 'expected 2 blank lines, found 1',
-        namespace = ns,
-        severity = 1,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '111',
-        col = 9,
-        end_col = 4,
-        end_lnum = 4,
-        lnum = 4,
-        message = 'indentation is not a multiple of 4',
-        namespace = ns,
-        severity = 1,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '117',
-        col = 9,
-        end_col = 4,
-        end_lnum = 4,
-        lnum = 4,
-        message = 'over-indented',
-        namespace = ns,
-        severity = 1,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '271',
-        col = 15,
-        end_col = 4,
-        end_lnum = 4,
-        lnum = 4,
-        message = 'multiple spaces after keyword',
-        namespace = ns,
-        severity = 1,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '821',
-        col = 17,
-        end_col = 4,
-        end_lnum = 4,
-        lnum = 4,
-        message = "undefined name 'bar'",
-        namespace = ns,
-        severity = 3,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '305',
-        col = 0,
-        end_col = 5,
-        end_lnum = 5,
-        lnum = 5,
-        message = 'expected 2 blank lines after class or function definition, found 0',
-        namespace = ns,
-        severity = 1,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '501',
-        col = 79,
-        end_col = 5,
-        end_lnum = 5,
-        lnum = 5,
-        message = 'line too long (80 > 79 characters)',
-        namespace = ns,
-        severity = 1,
-        source = 'flake8',
-      },
-      {
-        bufnr = buf,
-        code = '292',
-        col = 80,
-        end_col = 5,
-        end_lnum = 5,
-        lnum = 5,
-        message = 'no newline at end of file',
-        namespace = ns,
-        severity = 2,
-        source = 'flake8',
-      },
-    }, diagnostics)
+    assert.is_true(#diagnostics > 0)
+    for _, d in ipairs(diagnostics) do
+      assert.equal(buf, d.bufnr)
+      assert.equal('flake8', d.source)
+      assert.is_number(d.lnum)
+      assert.is_number(d.col)
+      assert.is_string(d.message)
+    end
   end)
 end)

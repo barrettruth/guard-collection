@@ -1,107 +1,71 @@
 # Contributing to guard-collection
 
 - Add your config to `formatter.lua` or `linter/<tool-name>.lua`, if it's a linter don't forget to export it in `linter/init.lua`
-- Write a test. If it's a formatter, show that the config works by giving an example input and verify that the file did got formatted as intended. For example:
+- Write a test in the appropriate `test/<category>/` directory. Tests run tools synchronously via `vim.system():wait()`, bypassing guard.nvim's async pipeline.
+
+Formatter example:
 
 ```lua
 describe('black', function()
   it('can format', function()
-    -- pre-test setup
-    local ft = require('guard.filetype')
-    ft('python'):fmt('black')
-    -- Giving example input to the helper
-    -- the helper creates a new buffer with it, formats, and returns the formatted output
-    local formatted = require('test.formatter.helper').test_with('python', {
-      -- The input code should somewhat reflect the filetype
+    local formatted = require('test.helper').run_fmt('black', 'python', {
       [[def foo(n):]],
       [[    if n in         (1,2,3):]],
       [[        return n+1]],
-      [[a, b = 1,    2]],
-      [[b, a =     a, b]],
-      [[print(  f"The factorial of {a} is: {foo(a)}")]],
     })
-    -- Show that the input is indeed formatted as intended
     assert.are.same({
       [[def foo(n):]],
       [[    if n in (1, 2, 3):]],
       [[        return n + 1]],
-      [[]],
-      [[]],
-      [[a, b = 1, 2]],
-      [[b, a = a, b]],
-      [[print(f"The factorial of {a} is: {foo(a)}")]],
     }, formatted)
   end)
 end)
 ```
 
-- Or if it's a linter, show that the linter's output is converted correctly into neovim diagnostics
+Linter example:
 
 ```lua
-describe('selene', function()
+describe('flake8', function()
   it('can lint', function()
-    -- pre-test setup
-    local helper = require('test.linter.helper')
-    local ns = helper.namespace
-    local ft = require('guard.filetype')
-    ft('lua'):lint('selene')
-    require('guard').setup()
-    -- Giving example input to the helper
-    -- the helper creates a new buffer with it, requires lint, and returns the diagnostics
-    local buf, diagnostics = require('test.linter.helper').test_with('lua', {
-      -- Make sure the input actually has some problems that the linter detects
-      [[local M = {}]],
-      [[function M.foo()]],
-      [[  print("foo")]],
-      [[end]],
-      [[U.bar()]],
-      [[return M]],
+    local helper = require('test.helper')
+    local buf, diagnostics = helper.run_lint('flake8', 'python', {
+      [[import os]],
     })
-    -- Show that the diagnostics is indeed valid
-    assert.are.same({
-      {
-        bufnr = buf,
-        col = 0,
-        end_col = 0,
-        end_lnum = 4,
-        lnum = 4,
-        message = '`U` is not defined [undefined_variable]',
-        -- sometimes the namespace is not fixed
-        namespace = ns,
-        severity = 1,
-        source = 'selene',
-      },
-    }, diagnostics)
+    assert.is_true(#diagnostics > 0)
+    for _, d in ipairs(diagnostics) do
+      assert.equal(buf, d.bufnr)
+      assert.equal('flake8', d.source)
+      assert.is_number(d.lnum)
+      assert.is_string(d.message)
+    end
   end)
 end)
-
 ```
 
-- To run the test you just created, install [vusted](https://github.com/notomo/vusted)
-  ```shell
-  luarocks --lua-version=5.1 install vusted
-  ```
-- Create a symlink so that vusted recognizes guard.nvim namespaces
+For linters with a custom `fn` (cpplint, checkmake, zsh), run the command directly and test `parse()`:
 
-```shell
-ln -s ~/.local/share/nvim/lazy/guard.nvim/lua/guard lua
+```lua
+describe('cpplint', function()
+  it('can lint', function()
+    local linter = require('test.helper').get_linter('cpplint')
+    local tmpfile = '/tmp/guard-test.cpp'
+    vim.fn.writefile({ [[int main(){int x=1;}]] }, tmpfile)
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    local result = vim.system({ 'cpplint', '--filter=-legal/copyright', tmpfile }, {}):wait()
+    local diagnostics = linter.parse(result.stderr or '', bufnr)
+    assert.is_true(#diagnostics > 0)
+  end)
+end)
 ```
 
-- Run the test and make sure it passes
-
+- Add your tool to CI in `.github/workflows/ci.yaml` under the appropriate job
+- Run the test locally:
   ```shell
-
-  vusted ./test/formatter/<tool-name>_spec.lua
-  # or
-  vusted ./test/linter/<tool-name>\_spec.lua
-
-  ok 1 - <tool-name> can format
-  ok 1 - <tool-name> can lint
+  # requires: neovim, lua 5.1, luarocks, busted, nlua
+  # also requires guard.nvim cloned: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+  make test-pip  # or whichever category
   ```
-
-- Modify `test/setup.sh` so that CI installs your tool
-
-- Optionally, format the code with stylua
+- Format with stylua before submitting:
   ```shell
   stylua .
   ```
