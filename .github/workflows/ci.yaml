@@ -69,7 +69,7 @@ jobs:
           luarocks install busted --local
           luarocks install nlua --local
       - name: Pre-warm npm-groovy-lint
-        run: npm-groovy-lint --help || true
+        run: echo 'class X{}' | npm-groovy-lint --format -
         timeout-minutes: 10
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
