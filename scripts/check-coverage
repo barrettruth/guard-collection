@@ -1,0 +1,96 @@
+#!/bin/sh
+set -eu
+
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+bold='\033[1m'
+dim='\033[2m'
+reset='\033[0m'
+
+root="$(cd "$(dirname "$0")/.." && pwd)"
+fmt_src="$root/lua/guard-collection/formatter.lua"
+lint_src="$root/lua/guard-collection/linter/init.lua"
+test_dir="$root/test"
+
+fmt_names=$(
+  sed -n "s/^M\.\([a-zA-Z_][a-zA-Z0-9_]*\) =.*/\1/p" "$fmt_src"
+  sed -n "s/^M\['\([^']*\)'\] =.*/\1/p" "$fmt_src"
+)
+
+lint_names=$(
+  sed -n "s/^  \([a-zA-Z_][a-zA-Z0-9_]*\) = require.*/\1/p" "$lint_src"
+  sed -n "s/^  \['\([^']*\)'\] = require.*/\1/p" "$lint_src"
+)
+
+tested=""
+for f in "$test_dir"/*/*_spec.lua; do
+  [ -f "$f" ] || continue
+  name="${f##*/}"
+  name="${name%_spec.lua}"
+  tested="$tested $name"
+done
+
+has_test() {
+  for t in $tested; do
+    [ "$t" = "$1" ] && return 0
+  done
+  return 1
+}
+
+total_fmt=0
+covered_fmt=0
+missing_fmt=""
+for name in $fmt_names; do
+  total_fmt=$((total_fmt + 1))
+  if has_test "$name"; then
+    covered_fmt=$((covered_fmt + 1))
+  else
+    missing_fmt="$missing_fmt $name"
+  fi
+done
+
+total_lint=0
+covered_lint=0
+missing_lint=""
+for name in $lint_names; do
+  total_lint=$((total_lint + 1))
+  if has_test "$name"; then
+    covered_lint=$((covered_lint + 1))
+  else
+    missing_lint="$missing_lint $name"
+  fi
+done
+
+total=$((total_fmt + total_lint))
+covered=$((covered_fmt + covered_lint))
+missing=$((total - covered))
+
+printf "\n"
+printf "${bold}guard-collection test coverage${reset}\n"
+printf "${dim}────────────────────────────────${reset}\n"
+printf "  formatters: ${bold}%d${reset}/%d\n" "$covered_fmt" "$total_fmt"
+printf "  linters:    ${bold}%d${reset}/%d\n" "$covered_lint" "$total_lint"
+printf "  total:      ${bold}%d${reset}/%d\n" "$covered" "$total"
+printf "${dim}────────────────────────────────${reset}\n"
+
+if [ "$missing" -gt 0 ]; then
+  if [ -n "$(echo $missing_fmt)" ]; then
+    printf "\n${yellow}formatters missing tests:${reset}\n"
+    for name in $missing_fmt; do
+      printf "  ${red}✗${reset} %s\n" "$name"
+    done
+  fi
+
+  if [ -n "$(echo $missing_lint)" ]; then
+    printf "\n${yellow}linters missing tests:${reset}\n"
+    for name in $missing_lint; do
+      printf "  ${red}✗${reset} %s\n" "$name"
+    done
+  fi
+
+  printf "\n${red}${bold}FAIL: %d tools have no test${reset}\n\n" "$missing"
+  exit 1
+fi
+
+printf "\n${green}${bold}OK: all tools have tests${reset}\n\n"

@@ -1,10 +1,13 @@
 LUA_PATH := lua/?.lua;lua/?/init.lua;$(LUA_PATH)
 export LUA_PATH
 
-.PHONY: lint test test-pip test-npm test-go test-rust test-lua test-binary test-clang test-haskell
+.PHONY: lint test check-coverage test-pip test-npm test-go test-rust test-lua test-binary test-clang test-haskell
 
 lint:
 	stylua --check .
+
+check-coverage:
+	./scripts/check-coverage
 
 test: test-pip test-npm test-go test-rust test-lua test-binary test-clang test-haskell
 
