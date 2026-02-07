@@ -196,7 +196,7 @@ jobs:
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
           busted --lua nlua test/binary/*_spec.lua
 
-  test-clang:
+  test-apt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -218,5 +218,5 @@ jobs:
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          for f in test/clang/*_spec.lua; do busted --lua nlua "$f"; done
+          for f in test/apt/*_spec.lua; do busted --lua nlua "$f"; done
 
