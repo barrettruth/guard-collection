@@ -27,5 +27,5 @@ test-binary:
 	busted --lua nlua test/binary/*_spec.lua
 
 test-apt:
-	@for f in test/apt/*_spec.lua; do busted --lua nlua "$$f"; done
+	busted --lua nlua test/apt/*_spec.lua
 

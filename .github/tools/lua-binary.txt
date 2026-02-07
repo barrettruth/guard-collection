@@ -1,0 +1,2 @@
+selene zip https://github.com/Kampfkarren/selene/releases/download/0.28.0/selene-0.28.0-linux.zip
+stylua zip https://github.com/JohnnyMorganz/StyLua/releases/download/v2.0.2/stylua-linux-x86_64.zip

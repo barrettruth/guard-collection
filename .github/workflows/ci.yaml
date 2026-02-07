@@ -34,7 +34,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          pip install -q autopep8 black cmake-format cpplint docformatter flake8 mypy ruff sqlfluff yapf
+          pip install -q -r .github/tools/pip.txt
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
@@ -61,7 +61,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          npm install -g prettier @biomejs/biome sql-formatter @taplo/cli
+          xargs npm install -g < .github/tools/npm.txt
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
@@ -89,8 +89,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          go install mvdan.cc/gofumpt@latest
-          go install github.com/segmentio/golines@latest
+          xargs -L1 go install < .github/tools/go.txt
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
@@ -147,13 +146,7 @@ jobs:
           luarocks install busted --local
           luarocks install nlua --local
           luarocks install luacheck --local
-          mkdir -p $HOME/.local/bin
-          wget -q https://github.com/Kampfkarren/selene/releases/download/0.28.0/selene-0.28.0-linux.zip
-          unzip -q selene-0.28.0-linux.zip -d $HOME/.local/bin
-          chmod +x $HOME/.local/bin/selene
-          wget -q https://github.com/JohnnyMorganz/StyLua/releases/download/v2.0.2/stylua-linux-x86_64.zip
-          unzip -q stylua-linux-x86_64.zip -d $HOME/.local/bin
-          chmod +x $HOME/.local/bin/stylua
+          bash .github/scripts/install-binary-tools.sh "$HOME/.local/bin" .github/tools/lua-binary.txt
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
@@ -179,15 +172,7 @@ jobs:
           sudo apt-get install -y zsh
           luarocks install busted --local
           luarocks install nlua --local
-          mkdir -p $HOME/.local/bin
-          cd $HOME/.local/bin
-          wget -q https://github.com/kamadorueda/alejandra/releases/download/4.0.0/alejandra-x86_64-unknown-linux-musl -O alejandra && chmod +x alejandra
-          wget -q https://github.com/bufbuild/buf/releases/download/v1.47.2/buf-Linux-x86_64 -O buf && chmod +x buf
-          wget -q https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 -O checkmake && chmod +x checkmake
-          wget -q https://github.com/denoland/deno/releases/download/v2.1.4/deno-x86_64-unknown-linux-gnu.zip && unzip -q deno-x86_64-unknown-linux-gnu.zip && chmod +x deno
-          wget -q https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux -O latexindent && chmod +x latexindent
-          wget -q https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip && unzip -q swiftformat_linux.zip && mv swiftformat_linux swiftformat && chmod +x swiftformat
-          wget -q https://github.com/ndmitchell/hlint/releases/download/v3.10/hlint-3.10-x86_64-linux.tar.gz -O hlint.tar.gz && tar xzf hlint.tar.gz hlint-3.10/hlint --strip-components=1 && chmod +x hlint && rm hlint.tar.gz
+          bash .github/scripts/install-binary-tools.sh "$HOME/.local/bin"
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
@@ -210,7 +195,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          sudo apt-get install -y clang-format clang-tidy
+          xargs sudo apt-get install -y < .github/tools/apt.txt
           luarocks install busted --local
           luarocks install nlua --local
       - name: Clone guard.nvim
@@ -218,5 +203,5 @@ jobs:
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          for f in test/apt/*_spec.lua; do busted --lua nlua "$f"; done
+          busted --lua nlua test/apt/*_spec.lua
 

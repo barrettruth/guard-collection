@@ -1,0 +1,2 @@
+mvdan.cc/gofumpt@latest
+github.com/segmentio/golines@latest
