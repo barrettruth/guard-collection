@@ -1,9 +1,6 @@
-describe('ruff', function()
+describe('black', function()
   it('can format', function()
-    local ft = require('guard.filetype')
-    ft('python'):fmt('ruff')
-
-    local formatted = require('test.formatter.helper').test_with('python', {
+    local formatted = require('test.helper').run_fmt('black', 'python', {
       [[def foo(n):]],
       [[    if n in         (1,2,3):]],
       [[        return n+1]],
