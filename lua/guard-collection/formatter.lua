@@ -299,7 +299,8 @@ M.ruff = {
 
 M.ruff_fix = {
   cmd = 'ruff',
-  args = { 'check', '--fix' },
+  args = { '--fix', '-', '--stdin-filename' },
+  stdin = true,
   fname = true,
 }
 
@@ -318,8 +319,8 @@ M.biome = {
 
 M.buf = {
   cmd = 'buf',
-  args = { 'format', '-w' },
-  fname = true,
+  args = { 'format' },
+  stdin = true,
 }
 
 M.xmllint = {
