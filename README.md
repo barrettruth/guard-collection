@@ -10,9 +10,11 @@
 - [autopep8](https://github.com/hhatto/autopep8)
 - [black](https://github.com/psf/black)
 - [biome](https://biomejs.dev)
+- [buf](https://github.com/bufbuild/buf)
 - [cbfmt](https://github.com/lukas-reineke/cbfmt)
 - [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html)
 - [cljfmt](https://github.com/weavejester/cljfmt)
+- [cmake-format](https://github.com/cheshirekow/cmake_format)
 - [csharpier](https://csharpier.com/)
 - [dart](https://github.com/dart-lang)
 - [deno_fmt](https://github.com/denoland/deno) as `deno fmt`
@@ -63,9 +65,13 @@
 
 ## Linters
 
+- [buf](https://github.com/bufbuild/buf)
+- [checkmate](https://github.com/checkmake/checkmake)
 - [clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
 - [codespell](https://github.com/codespell-project/codespell)
+- [cpplint](https://github.com/cpplint/cpplint)
 - [detekt](https://detekt.dev/)
+- [dmypy](https://mypy.readthedocs.io/en/stable/mypy_daemon.html)
 - [eslint](https://eslint.org/)
 - [eslint_d](https://github.com/mantoni/eslint_d.js)
 - [flake8](https://github.com/PyCQA/flake8)
@@ -74,6 +80,8 @@
 - [hlint](https://github.com/ndmitchell/hlint)
 - [ktlint](https://github.com/pinterest/ktlint)
 - [luacheck](https://github.com/lunarmodules/luacheck)
+- [mypy](https://mypy.readthedocs.io/en/stable/index.html)
+- [mypyc](https://mypyc.readthedocs.io/en/latest/index.html)
 - [sqlfluff](https://github.com/sqlfluff/sqlfluff)
 - [pylint](https://github.com/PyCQA/pylint)
 - [rubocop](https://github.com/rubocop/rubocop)
@@ -82,8 +90,6 @@
 - [stylelint](https://stylelint.io/)
 - [ruff](https://github.com/astral-sh/ruff)
 - [typos](https://github.com/crate-ci/typos)
-- [mypy](https://mypy.readthedocs.io/en/stable/index.html)
-- [mypyc](https://mypyc.readthedocs.io/en/latest/index.html)
-- [dmypy](https://mypy.readthedocs.io/en/stable/mypy_daemon.html)
+- [zsh](https://www.zsh.org/) as `zsh -n`
 
 ## License MIT
