@@ -1,0 +1,4 @@
+prettier
+@biomejs/biome
+sql-formatter
+@taplo/cli

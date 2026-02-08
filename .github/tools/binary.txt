@@ -1,0 +1,7 @@
+alejandra bin https://github.com/kamadorueda/alejandra/releases/download/4.0.0/alejandra-x86_64-unknown-linux-musl
+buf bin https://github.com/bufbuild/buf/releases/download/v1.47.2/buf-Linux-x86_64
+checkmake bin https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64
+deno zip https://github.com/denoland/deno/releases/download/v2.1.4/deno-x86_64-unknown-linux-gnu.zip
+hlint tar https://github.com/ndmitchell/hlint/releases/download/v3.10/hlint-3.10-x86_64-linux.tar.gz hlint-3.10/hlint
+latexindent bin https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux
+swiftformat zip https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip swiftformat_linux
