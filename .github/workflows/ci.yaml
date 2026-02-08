@@ -147,6 +147,7 @@ jobs:
           luarocks install busted --local
           luarocks install nlua --local
           luarocks install luacheck --local
+          luarocks install fnlfmt --local
           bash .github/scripts/install-binary-tools.sh "$HOME/.local/bin" .github/tools/lua-binary.txt
       - name: Clone guard.nvim
         run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
@@ -164,6 +165,10 @@ jobs:
         with:
           neovim: true
           version: nightly
+      - uses: dart-lang/setup-dart@v1
+      - uses: mlugg/setup-zig@v2
+        with:
+          version: 0.15.2
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -174,7 +179,7 @@ jobs:
       - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          sudo apt-get install -y zsh shellcheck
+          sudo apt-get install -y zsh jq libxml2-utils shellcheck fish pgformatter
           luarocks install busted --local
           luarocks install nlua --local
           bash .github/scripts/install-binary-tools.sh "$HOME/.local/bin"
@@ -268,4 +273,121 @@ jobs:
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
           busted --lua nlua test/ruby/*_spec.lua
+
+  test-clojure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: leso-kn/gh-actions-lua@master
+        with:
+          luaVersion: "5.1"
+      - uses: hishamhm/gh-actions-luarocks@master
+      - name: Install Clojure CLI
+        run: |
+          curl -L -O https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh
+          chmod +x linux-install.sh
+          sudo ./linux-install.sh
+      - name: Install tools
+        run: |
+          mkdir -p $HOME/.local/bin
+          printf '#!/bin/sh\nclojure -Sdeps '"'"'{:deps {dev.weavejester/cljfmt {:mvn/version "0.13.0"}}}'"'"' -M -m cljfmt.main "$@"\n' > $HOME/.local/bin/cljfmt && chmod +x $HOME/.local/bin/cljfmt
+          luarocks install busted --local
+          luarocks install nlua --local
+      - name: Pre-warm cljfmt deps
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          echo "" | cljfmt fix - || true
+      - name: Clone guard.nvim
+        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+      - name: Run tests
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          busted --lua nlua test/clojure/*_spec.lua
+
+  test-elixir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '27'
+          elixir-version: '1.17'
+      - uses: leso-kn/gh-actions-lua@master
+        with:
+          luaVersion: "5.1"
+      - uses: hishamhm/gh-actions-luarocks@master
+      - name: Install tools
+        run: |
+          luarocks install busted --local
+          luarocks install nlua --local
+      - name: Clone guard.nvim
+        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+      - name: Run tests
+        run: |
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          busted --lua nlua test/elixir/*_spec.lua
+
+  test-nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+      - uses: cachix/install-nix-action@v27
+      - uses: leso-kn/gh-actions-lua@master
+        with:
+          luaVersion: "5.1"
+      - uses: hishamhm/gh-actions-luarocks@master
+      - name: Install tools
+        run: |
+          nix profile install nixpkgs#nixfmt-rfc-style
+          luarocks install busted --local
+          luarocks install nlua --local
+      - name: Clone guard.nvim
+        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+      - name: Run tests
+        run: |
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          busted --lua nlua test/nix/*_spec.lua
+
+  test-swift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+      - uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '6.0'
+      - uses: leso-kn/gh-actions-lua@master
+        with:
+          luaVersion: "5.1"
+      - uses: hishamhm/gh-actions-luarocks@master
+      - name: Install tools
+        run: |
+          luarocks install busted --local
+          luarocks install nlua --local
+      - name: Clone guard.nvim
+        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+      - name: Run tests
+        run: |
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          busted --lua nlua test/swift/*_spec.lua
 

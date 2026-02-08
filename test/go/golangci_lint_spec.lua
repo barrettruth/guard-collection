@@ -1,22 +1,10 @@
 describe('golangci_lint', function()
-  local tmpdir = vim.fn.getcwd() .. '/tmp-golangci-lint-test'
-
-  setup(function()
-    vim.fn.mkdir(tmpdir, 'p')
-    vim.fn.writefile({
-      'module testmod',
-      '',
-      'go 1.21',
-    }, tmpdir .. '/go.mod')
-  end)
-
-  teardown(function()
-    vim.fn.delete(tmpdir, 'rf')
-  end)
-
   it('can lint', function()
-    local helper = require('test.helper')
-    local bufnr, diagnostics = helper.run_lint('golangci_lint', 'go', {
+    local linter = require('test.helper').get_linter('golangci_lint')
+    local tmpdir = '/tmp/golangci-test'
+    vim.fn.mkdir(tmpdir, 'p')
+    vim.fn.writefile({ 'module test', '', 'go 1.21' }, tmpdir .. '/go.mod')
+    local input = {
       'package main',
       '',
       'import "fmt"',
@@ -24,7 +12,21 @@ describe('golangci_lint', function()
       'func main() {',
       '\tfmt.Errorf("unused error")',
       '}',
-    }, { cwd = tmpdir, tmpdir = tmpdir })
+    }
+    vim.fn.writefile(input, tmpdir .. '/main.go')
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    local result = vim
+      .system({
+        'golangci-lint',
+        'run',
+        '--fix=false',
+        '--out-format=json',
+      }, {
+        cwd = tmpdir,
+      })
+      :wait()
+    local output = result.stdout or ''
+    local diagnostics = linter.parse(output, bufnr)
     assert.is_true(#diagnostics > 0)
     for _, d in ipairs(diagnostics) do
       assert.equal(bufnr, d.bufnr)

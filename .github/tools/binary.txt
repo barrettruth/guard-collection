@@ -1,12 +1,19 @@
 alejandra bin https://github.com/kamadorueda/alejandra/releases/download/4.0.0/alejandra-x86_64-unknown-linux-musl
 buf bin https://github.com/bufbuild/buf/releases/download/v1.47.2/buf-Linux-x86_64
-hadolint bin https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+cbfmt tar https://github.com/lukas-reineke/cbfmt/releases/download/v0.2.0/cbfmt_linux-x86_64_v0.2.0.tar.gz cbfmt_linux-x86_64_v0.2.0/cbfmt
 checkmake bin https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64
 deno zip https://github.com/denoland/deno/releases/download/v2.1.4/deno-x86_64-unknown-linux-gnu.zip
 detekt jar https://github.com/detekt/detekt/releases/download/v1.23.7/detekt-cli-1.23.7-all.jar
-hlint tar https://github.com/ndmitchell/hlint/releases/download/v3.10/hlint-3.10-x86_64-linux.tar.gz hlint-3.10/hlint
-latexindent bin https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux
-swiftformat zip https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip swiftformat_linux
-cbfmt tar https://github.com/lukas-reineke/cbfmt/releases/download/v0.2.0/cbfmt_linux-x86_64_v0.2.0.tar.gz cbfmt_linux-x86_64_v0.2.0/cbfmt
 dprint zip https://github.com/dprint/dprint/releases/download/0.49.0/dprint-x86_64-unknown-linux-gnu.zip
+google-java-format jar https://github.com/google/google-java-format/releases/download/v1.34.1/google-java-format-1.34.1-all-deps.jar
+hadolint bin https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+hlint tar https://github.com/ndmitchell/hlint/releases/download/v3.10/hlint-3.10-x86_64-linux.tar.gz hlint-3.10/hlint
+ktfmt jar https://repo1.maven.org/maven2/com/facebook/ktfmt/0.52/ktfmt-0.52-jar-with-dependencies.jar
 ktlint bin https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint
+latexindent bin https://github.com/cmhughes/latexindent.pl/releases/download/V3.24.4/latexindent-linux
+ormolu zip https://github.com/tweag/ormolu/releases/download/0.8.0.2/ormolu-x86_64-linux.zip
+shfmt bin https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_amd64
+swiftformat zip https://github.com/nicklockwood/SwiftFormat/releases/download/0.55.3/swiftformat_linux.zip swiftformat_linux
+tombi gz https://github.com/tombi-toml/tombi/releases/download/v0.7.27/tombi-cli-0.7.27-x86_64-unknown-linux-musl.gz
+typos tar https://github.com/crate-ci/typos/releases/download/v1.43.3/typos-v1.43.3-x86_64-unknown-linux-musl.tar.gz ./typos
+typstyle bin https://github.com/typstyle-rs/typstyle/releases/download/v0.14.4/typstyle-x86_64-unknown-linux-gnu

@@ -1,21 +1,21 @@
 describe('cbfmt', function()
-  local tmpdir = vim.fn.getcwd() .. '/tmp-cbfmt-test'
-
-  setup(function()
+  it('can format', function()
+    local tmpdir = '/tmp/cbfmt-test'
     vim.fn.mkdir(tmpdir, 'p')
     vim.fn.writefile({ '[languages]' }, tmpdir .. '/.cbfmt.toml')
-  end)
-
-  teardown(function()
-    vim.fn.delete(tmpdir, 'rf')
-  end)
-
-  it('can format', function()
-    local formatted = require('test.helper').run_fmt('cbfmt', 'md', {
+    local input = {
       '# Title',
       '',
       'Some text.',
-    }, { cwd = tmpdir })
+    }
+    local result = vim
+      .system({ 'cbfmt', '--best-effort', '-p', 'markdown' }, {
+        stdin = table.concat(input, '\n') .. '\n',
+        cwd = tmpdir,
+      })
+      :wait()
+    assert(result.code == 0, 'cbfmt exited ' .. result.code .. ': ' .. (result.stderr or ''))
+    local formatted = vim.split(result.stdout, '\n', { trimempty = true })
     assert.are.same({
       '# Title',
       '',
