@@ -299,7 +299,7 @@ M.ruff = {
 
 M.ruff_fix = {
   cmd = 'ruff',
-  args = { '--fix', '-', '--stdin-filename' },
+  args = { 'check', '--fix', '-', '--stdin-filename' },
   stdin = true,
   fname = true,
 }
@@ -319,7 +319,7 @@ M.biome = {
 
 M.buf = {
   cmd = 'buf',
-  args = { 'format' },
+  args = { 'format', '-' },
   stdin = true,
 }
 

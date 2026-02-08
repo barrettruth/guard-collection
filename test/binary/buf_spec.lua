@@ -1,5 +1,5 @@
 describe('buf', function()
-  local tmpdir = vim.fn.getcwd() .. '/tmp-buf-test'
+  local tmpdir = '/tmp/buf-test'
 
   setup(function()
     vim.fn.mkdir(tmpdir, 'p')
@@ -14,7 +14,7 @@ describe('buf', function()
       'syntax="proto3";',
       'package test;',
       'message Foo{string bar=1;}',
-    }, { tmpdir = tmpdir, cwd = tmpdir })
+    })
     assert.is_true(#formatted > 3)
   end)
 
