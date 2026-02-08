@@ -30,5 +30,15 @@ while read -r name type url extra; do
       chmod +x "$dest/$name"
       rm -rf "$tmpdir"
       ;;
+    gz)
+      wget -q "$url" -O "$dest/$name.gz"
+      gunzip "$dest/$name.gz"
+      chmod +x "$dest/$name"
+      ;;
+    jar)
+      wget -q "$url" -O "$dest/$name.jar"
+      printf '#!/bin/sh\njava -jar %s/%s.jar "$@"\n' "$dest" "$name" > "$dest/$name"
+      chmod +x "$dest/$name"
+      ;;
   esac
 done < "$manifest"
