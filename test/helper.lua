@@ -55,6 +55,28 @@ function M.run_lint(name, ft, input, opts)
   return bufnr, diags
 end
 
+function M.run_lint_fn(name, ft, input, opts)
+  opts = opts or {}
+  local linter = require('guard-collection.linter')[name]
+  assert(linter, 'unknown linter: ' .. name)
+  assert(linter.fn, name .. ' does not use custom fn')
+  local dir = opts.tmpdir or '/tmp'
+  local tmpfile = dir .. '/guard-test.' .. ft
+  vim.fn.writefile(input, tmpfile)
+  local bufnr = api.nvim_create_buf(false, true)
+  local output
+  local co = coroutine.create(function()
+    output = linter.fn(nil, tmpfile)
+  end)
+  coroutine.resume(co)
+  vim.wait(5000, function()
+    return output ~= nil
+  end)
+  assert(output ~= nil, name .. ' fn timed out')
+  local diags = linter.parse(output, bufnr)
+  return bufnr, diags
+end
+
 function M.assert_diag(d, expect)
   local a = require('luassert')
   if expect.bufnr then

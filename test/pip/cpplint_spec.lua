@@ -1,17 +1,10 @@
 describe('cpplint', function()
   it('can lint', function()
-    local linter = require('test.helper').get_linter('cpplint')
-    local tmpfile = '/tmp/guard-test.cpp'
-    local input = { [[int main(){int x=1;}]] }
-    vim.fn.writefile(input, tmpfile)
-    local bufnr = vim.api.nvim_create_buf(false, true)
-    local result = vim.system({ 'cpplint', '--filter=-legal/copyright', tmpfile }, {}):wait()
-    local output = result.stderr or ''
-    local diagnostics = linter.parse(output, bufnr)
+    local helper = require('test.helper')
+    local bufnr, diagnostics = helper.run_lint_fn('cpplint', 'cpp', { [[int main(){int x=1;}]] })
     assert.is_true(#diagnostics > 0)
     for _, d in ipairs(diagnostics) do
-      assert.equal(bufnr, d.bufnr)
-      assert.equal('cpplint', d.source)
+      helper.assert_diag(d, { bufnr = bufnr, source = 'cpplint' })
       assert.is_number(d.lnum)
       assert.is_string(d.message)
     end
