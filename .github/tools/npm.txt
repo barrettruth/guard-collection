@@ -2,3 +2,6 @@ prettier
 @biomejs/biome
 sql-formatter
 @taplo/cli
+eslint
+eslint_d
+stylelint

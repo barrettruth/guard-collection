@@ -19,4 +19,23 @@ describe('ruff', function()
       [[print(f"The factorial of {a} is: {foo(a)}")]],
     }, formatted)
   end)
+
+  it('can lint', function()
+    local helper = require('test.helper')
+    local bufnr, diagnostics = helper.run_lint('ruff', 'py', {
+      [[import os]],
+      [[x = 1]],
+    })
+    assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = bufnr,
+      source = 'ruff',
+    })
+    for _, d in ipairs(diagnostics) do
+      assert.equal(bufnr, d.bufnr)
+      assert.equal('ruff', d.source)
+      assert.is_number(d.lnum)
+      assert.is_string(d.message)
+    end
+  end)
 end)
