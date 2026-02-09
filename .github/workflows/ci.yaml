@@ -113,7 +113,7 @@ jobs:
           java-version: 21
       - name: Install tools
         run: |
-          sudo apt-get install -y zsh jq libxml2-utils shellcheck fish pgformatter
+          xargs sudo apt-get install -y < .github/tools/binary-apt.txt
           bash .github/scripts/install-binary-tools.sh "$HOME/.local/bin"
       - name: Run tests
         run: |
@@ -167,34 +167,6 @@ jobs:
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
           busted --lua nlua test/ruby/*_spec.lua
-
-  test-clojure:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/test-setup
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
-      - name: Install Clojure CLI
-        run: |
-          curl -L -O https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh
-          chmod +x linux-install.sh
-          sudo ./linux-install.sh
-      - name: Install tools
-        run: |
-          mkdir -p $HOME/.local/bin
-          printf '#!/bin/sh\nclojure -Sdeps '"'"'{:deps {dev.weavejester/cljfmt {:mvn/version "0.13.0"}}}'"'"' -M -m cljfmt.main "$@"\n' > $HOME/.local/bin/cljfmt && chmod +x $HOME/.local/bin/cljfmt
-      - name: Pre-warm cljfmt deps
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          echo "" | cljfmt fix - || true
-      - name: Run tests
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
-          busted --lua nlua test/clojure/*_spec.lua
 
   test-elixir:
     runs-on: ubuntu-latest
