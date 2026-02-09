@@ -5,6 +5,7 @@ cpplint
 docformatter
 flake8
 mypy
+pylint
 ruff
 sqlfluff
 yapf

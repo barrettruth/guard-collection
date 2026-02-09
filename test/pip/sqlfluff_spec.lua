@@ -1,22 +1,23 @@
 describe('sqlfluff', function()
+  local tmpdir = vim.fn.getcwd() .. '/tmp-sqlfluff-test'
+
+  setup(function()
+    vim.fn.mkdir(tmpdir, 'p')
+    vim.fn.writefile({ '[sqlfluff]', 'dialect = ansi' }, tmpdir .. '/.sqlfluff')
+  end)
+
+  teardown(function()
+    vim.fn.delete(tmpdir, 'rf')
+  end)
+
   it('can format', function()
-    local config = require('guard-collection.formatter').sqlfluff
-    local cmd = vim.list_extend({ config.cmd }, config.args)
-    vim.list_extend(cmd, { '--dialect', 'ansi' })
-    local input = {
+    local formatted = require('test.helper').run_fmt('sqlfluff', 'sql', {
       [[SELECT          *]],
       [[FROM]],
       [[         World         ]],
       [[WHERE   "Someone"]],
       [[        LIKE     '%YOU%']],
-    }
-    local result = vim
-      .system(cmd, {
-        stdin = table.concat(input, '\n') .. '\n',
-      })
-      :wait()
-    assert(result.code == 0, 'sqlfluff exited ' .. result.code .. ': ' .. (result.stderr or ''))
-    local formatted = vim.split(result.stdout, '\n', { trimempty = true })
+    }, { cwd = tmpdir })
     assert.are.same({
       [[SELECT *]],
       [[FROM]],
@@ -28,22 +29,12 @@ describe('sqlfluff', function()
   end)
 
   it('can fix', function()
-    local config = require('guard-collection.formatter').sqlfluff_fix
-    local cmd = vim.list_extend({ config.cmd }, config.args)
-    vim.list_extend(cmd, { '--dialect', 'ansi' })
-    local input = {
+    local formatted = require('test.helper').run_fmt('sqlfluff_fix', 'sql', {
       [[SELECT]],
       [[    a + b  AS foo,]],
       [[    c AS bar]],
       [[FROM my_table]],
-    }
-    local result = vim
-      .system(cmd, {
-        stdin = table.concat(input, '\n') .. '\n',
-      })
-      :wait()
-    assert(result.code == 0, 'sqlfluff_fix exited ' .. result.code .. ': ' .. (result.stderr or ''))
-    local formatted = vim.split(result.stdout, '\n', { trimempty = true })
+    }, { cwd = tmpdir })
     assert.are.same({
       [[SELECT]],
       [[    c AS bar,]],
