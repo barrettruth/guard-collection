@@ -5,6 +5,12 @@ describe('selene', function()
       [[print(a)]],
     })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      source = 'selene',
+      severity = vim.diagnostic.severity.ERROR,
+      message_pat = 'not defined',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(buf, d.bufnr)
       assert.equal('selene', d.source)

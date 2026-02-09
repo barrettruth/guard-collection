@@ -1,36 +1,23 @@
 describe('eslint_d', function()
   it('can lint', function()
-    local linter = require('test.helper').get_linter('eslint_d')
+    local helper = require('test.helper')
     local tmpdir = '/tmp/eslintd-test'
     vim.fn.mkdir(tmpdir, 'p')
     vim.fn.writefile({
       'module.exports = [{ rules: { "no-unused-vars": "error" } }];',
     }, tmpdir .. '/eslint.config.js')
-    local tmpfile = tmpdir .. '/test.js'
-    local input = {
+    local buf, diagnostics = helper.run_lint('eslint_d', 'js', {
       [[const x = 1;]],
-    }
-    vim.fn.writefile(input, tmpfile)
-    local bufnr = vim.api.nvim_create_buf(false, true)
-    local result = vim
-      .system({
-        'npx',
-        'eslint_d',
-        '--format',
-        'json',
-        '--stdin',
-        '--stdin-filename',
-        tmpfile,
-      }, {
-        stdin = table.concat(input, '\n') .. '\n',
-        cwd = tmpdir,
-      })
-      :wait()
-    local output = result.stdout or ''
-    local diagnostics = linter.parse(output, bufnr)
+    }, { cwd = tmpdir, tmpdir = tmpdir })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      source = 'eslint_d',
+      severity = vim.diagnostic.severity.ERROR,
+      code = 'no-unused-vars',
+    })
     for _, d in ipairs(diagnostics) do
-      assert.equal(bufnr, d.bufnr)
+      assert.equal(buf, d.bufnr)
       assert.equal('eslint_d', d.source)
       assert.is_number(d.lnum)
       assert.is_string(d.message)

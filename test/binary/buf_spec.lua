@@ -19,32 +19,21 @@ describe('buf', function()
   end)
 
   it('can lint', function()
-    local linter = require('test.helper').get_linter('buf')
+    local helper = require('test.helper')
     vim.fn.writefile({ 'version: v2' }, tmpdir .. '/buf.yaml')
-    local protofile = tmpdir .. '/test.proto'
-    vim.fn.writefile({
+    local buf, diagnostics = helper.run_lint('buf', 'proto', {
       'syntax = "proto3";',
       'message Foo {',
       '  string bar = 1;',
       '}',
-    }, protofile)
-    local bufnr = vim.api.nvim_create_buf(false, true)
-    local result = vim
-      .system({
-        'buf',
-        'lint',
-        '--error-format=json',
-        protofile,
-      }, { cwd = tmpdir })
-      :wait()
-    local output = result.stdout or ''
-    if output == '' then
-      output = result.stderr or ''
-    end
-    local diagnostics = linter.parse(output, bufnr)
+    }, { cwd = tmpdir, tmpdir = tmpdir })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      source = 'buf',
+    })
     for _, d in ipairs(diagnostics) do
-      assert.equal(bufnr, d.bufnr)
+      assert.equal(buf, d.bufnr)
       assert.equal('buf', d.source)
       assert.is_number(d.lnum)
       assert.is_string(d.message)

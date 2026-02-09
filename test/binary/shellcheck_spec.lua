@@ -1,6 +1,7 @@
 describe('shellcheck', function()
   it('can lint', function()
-    local linter = require('test.helper').get_linter('shellcheck')
+    local helper = require('test.helper')
+    local linter = helper.get_linter('shellcheck')
     local tmpfile = '/tmp/guard-test.sh'
     local input = {
       [[#!/bin/sh]],
@@ -20,6 +21,12 @@ describe('shellcheck', function()
     local output = result.stdout or ''
     local diagnostics = linter.parse(output, bufnr)
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = bufnr,
+      source = 'shellcheck',
+      severity = vim.diagnostic.severity.INFO,
+      message_pat = 'Double quote',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(bufnr, d.bufnr)
       assert.equal('shellcheck', d.source)

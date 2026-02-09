@@ -27,6 +27,11 @@ describe('ruff', function()
       [[x = 1]],
     })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      source = 'ruff',
+      code = 'F401',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(buf, d.bufnr)
       assert.equal('ruff', d.source)

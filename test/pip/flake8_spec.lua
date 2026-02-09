@@ -10,6 +10,12 @@ describe('flake8', function()
       [[print("it's too long sentence to be displayed in one line, blah blah blah blah")]],
     })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      source = 'flake8',
+      severity = vim.diagnostic.severity.INFO,
+      code = '401',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(buf, d.bufnr)
       assert.equal('flake8', d.source)

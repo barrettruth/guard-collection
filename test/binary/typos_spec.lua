@@ -5,6 +5,11 @@ describe('typos', function()
       [[teh quick brown fox]],
     })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      severity = vim.diagnostic.severity.WARN,
+      message_pat = 'the',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(buf, d.bufnr)
       assert.is_number(d.lnum)

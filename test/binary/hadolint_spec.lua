@@ -1,6 +1,7 @@
 describe('hadolint', function()
   it('can lint', function()
-    local linter = require('test.helper').get_linter('hadolint')
+    local helper = require('test.helper')
+    local linter = helper.get_linter('hadolint')
     local tmpfile = '/tmp/guard-test.dockerfile'
     local input = {
       [[FROM ubuntu]],
@@ -19,6 +20,11 @@ describe('hadolint', function()
     local output = result.stdout or ''
     local diagnostics = linter.parse(output, bufnr)
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = bufnr,
+      source = 'hadolint',
+      severity = vim.diagnostic.severity.WARN,
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(bufnr, d.bufnr)
       assert.equal('hadolint', d.source)

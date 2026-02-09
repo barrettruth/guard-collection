@@ -7,6 +7,12 @@ describe('hlint', function()
       [[mapM (delete_line (fn2fp f) line) old]],
     })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      source = 'hlint',
+      severity = vim.diagnostic.severity.WARN,
+      message_pat = 'concatMap',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(buf, d.bufnr)
       assert.equal('hlint', d.source)

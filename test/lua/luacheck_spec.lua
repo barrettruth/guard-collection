@@ -10,6 +10,12 @@ describe('luacheck', function()
       [[return M]],
     })
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = buf,
+      source = 'luacheck',
+      severity = vim.diagnostic.severity.WARN,
+      code = '113',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(buf, d.bufnr)
       assert.equal('luacheck', d.source)

@@ -1,6 +1,7 @@
 describe('pylint', function()
   it('can lint', function()
-    local linter = require('test.helper').get_linter('pylint')
+    local helper = require('test.helper')
+    local linter = helper.get_linter('pylint')
     local tmpfile = '/tmp/guard-test.py'
     local input = {
       [[import os]],
@@ -22,6 +23,10 @@ describe('pylint', function()
     local output = result.stdout or ''
     local diagnostics = linter.parse(output, bufnr)
     assert.is_true(#diagnostics > 0)
+    helper.assert_diag(diagnostics[1], {
+      bufnr = bufnr,
+      source = 'pylint',
+    })
     for _, d in ipairs(diagnostics) do
       assert.equal(bufnr, d.bufnr)
       assert.equal('pylint', d.source)
