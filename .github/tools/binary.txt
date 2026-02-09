@@ -2,6 +2,7 @@ alejandra bin https://github.com/kamadorueda/alejandra/releases/download/4.0.0/a
 buf bin https://github.com/bufbuild/buf/releases/download/v1.47.2/buf-Linux-x86_64
 cbfmt tar https://github.com/lukas-reineke/cbfmt/releases/download/v0.2.0/cbfmt_linux-x86_64_v0.2.0.tar.gz cbfmt_linux-x86_64_v0.2.0/cbfmt
 checkmake bin https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64
+cljfmt tar https://github.com/weavejester/cljfmt/releases/download/0.15.6/cljfmt-0.15.6-linux-amd64-static.tar.gz cljfmt
 deno zip https://github.com/denoland/deno/releases/download/v2.1.4/deno-x86_64-unknown-linux-gnu.zip
 detekt jar https://github.com/detekt/detekt/releases/download/v1.23.7/detekt-cli-1.23.7-all.jar
 dprint zip https://github.com/dprint/dprint/releases/download/0.49.0/dprint-x86_64-unknown-linux-gnu.zip
