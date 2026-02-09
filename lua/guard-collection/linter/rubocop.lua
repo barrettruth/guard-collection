@@ -4,6 +4,7 @@ return {
   cmd = 'bundle',
   args = { 'exec', 'rubocop', '--format', 'json', '--force-exclusion', '--stdin' },
   stdin = true,
+  fname = true,
   parse = lint.from_json({
     get_diagnostics = function(...)
       return vim.json.decode(...).files[1].offenses

@@ -48,8 +48,8 @@ M.cljfmt = {
 }
 
 M.csharpier = {
-  cmd = 'dotnet-csharpier',
-  args = { '--write-stdout' },
+  cmd = 'csharpier',
+  args = { 'format', '--write-stdout' },
   stdin = true,
 }
 
@@ -299,7 +299,7 @@ M.ruff = {
 
 M.ruff_fix = {
   cmd = 'ruff',
-  args = { '--fix', '-', '--stdin-filename' },
+  args = { 'check', '--fix', '-', '--stdin-filename' },
   stdin = true,
   fname = true,
 }
@@ -319,8 +319,8 @@ M.biome = {
 
 M.buf = {
   cmd = 'buf',
-  args = { 'format' },
-  stdin = true,
+  args = { 'format', '-w' },
+  fname = true,
 }
 
 M.xmllint = {

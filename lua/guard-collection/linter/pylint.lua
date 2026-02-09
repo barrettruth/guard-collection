@@ -4,6 +4,7 @@ return {
   cmd = 'pylint',
   args = { '--from-stdin', '--output-format', 'json' },
   stdin = true,
+  fname = true,
   parse = lint.from_json({
     attributes = {
       severity = 'type',
