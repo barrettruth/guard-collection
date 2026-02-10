@@ -1,11 +1,16 @@
 autopep8
 black
 cmake-format
+codespell
 cpplint
+djhtml
 docformatter
 flake8
+isort
+mdformat
 mypy
 pylint
 ruff
 sqlfluff
+yamlfix
 yapf

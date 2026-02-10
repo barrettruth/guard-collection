@@ -1,4 +1,5 @@
 prettier
+@fsouza/prettierd
 @biomejs/biome
 sql-formatter
 @taplo/cli

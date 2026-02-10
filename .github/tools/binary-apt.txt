@@ -1,0 +1,6 @@
+fish
+jq
+libxml2-utils
+pgformatter
+shellcheck
+zsh

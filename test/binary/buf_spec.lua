@@ -17,4 +17,22 @@ describe('buf', function()
     }, { tmpdir = tmpdir })
     assert.is_true(#formatted > 3)
   end)
+
+  it('can lint', function()
+    local helper = require('test.helper')
+    vim.fn.writefile({ 'version: v2' }, tmpdir .. '/buf.yaml')
+    local bufnr, diagnostics = helper.run_lint('buf', 'proto', {
+      'syntax = "proto3";',
+      'message Foo {',
+      '  string bar = 1;',
+      '}',
+    }, { cwd = tmpdir, tmpdir = tmpdir })
+    assert.is_true(#diagnostics > 0)
+    for _, d in ipairs(diagnostics) do
+      assert.equal(bufnr, d.bufnr)
+      assert.equal('buf', d.source)
+      assert.is_number(d.lnum)
+      assert.is_string(d.message)
+    end
+  end)
 end)

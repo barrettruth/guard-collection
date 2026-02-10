@@ -21,24 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
+      - uses: ./.github/actions/test-setup
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
-        run: |
-          pip install -q -r .github/tools/pip.txt
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+        run: pip install -q -r .github/tools/pip.txt
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
@@ -48,24 +36,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
+      - uses: ./.github/actions/test-setup
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
-        run: |
-          xargs npm install -g < .github/tools/npm.txt
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+        run: xargs npm install -g < .github/tools/npm.txt
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
@@ -75,26 +51,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
+      - uses: ./.github/actions/test-setup
       - uses: actions/setup-go@v5
         with:
           go-version: stable
           cache: false
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
           xargs -L1 go install < .github/tools/go.txt
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.64.8
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
         run: |
           export PATH="$HOME/go/bin:$PATH"
@@ -105,26 +70,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
+      - uses: ./.github/actions/test-setup
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: rustfmt
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
-      - name: Install test tools
-        run: |
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
@@ -134,22 +86,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
+      - uses: ./.github/actions/test-setup
       - name: Install tools
         run: |
-          luarocks install busted --local
-          luarocks install nlua --local
           luarocks install luacheck --local
+          luarocks install fnlfmt --local
           bash .github/scripts/install-binary-tools.sh "$HOME/.local/bin" .github/tools/lua-binary.txt
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
         run: |
           export PATH="$HOME/.local/bin:$PATH"
@@ -160,26 +102,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
+      - uses: ./.github/actions/test-setup
+      - uses: dart-lang/setup-dart@v1
+      - uses: mlugg/setup-zig@v2
         with:
-          neovim: true
-          version: nightly
+          version: 0.15.2
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
         run: |
-          sudo apt-get install -y zsh shellcheck
-          luarocks install busted --local
-          luarocks install nlua --local
+          xargs sudo apt-get install -y < .github/tools/binary-apt.txt
           bash .github/scripts/install-binary-tools.sh "$HOME/.local/bin"
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
       - name: Run tests
         run: |
           export PATH="$HOME/.local/bin:$PATH"
@@ -190,21 +125,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
+      - uses: ./.github/actions/test-setup
       - name: Install tools
-        run: |
-          xargs sudo apt-get install -y < .github/tools/apt.txt
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+        run: xargs sudo apt-get install -y < .github/tools/apt.txt
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
@@ -214,24 +137,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
+      - uses: ./.github/actions/test-setup
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0'
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
-        run: |
-          dotnet tool install -g csharpier
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+        run: dotnet tool install -g csharpier
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
@@ -241,31 +152,53 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: nightly
+      - uses: ./.github/actions/test-setup
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-      - uses: leso-kn/gh-actions-lua@master
-        with:
-          luaVersion: "5.1"
-      - uses: hishamhm/gh-actions-luarocks@master
       - name: Install tools
-        run: |
-          gem install rubocop bundler
-          luarocks install busted --local
-          luarocks install nlua --local
-      - name: Setup rubocop Gemfile
-        run: |
-          mkdir -p /tmp/rubocop-test
-          printf "source 'https://rubygems.org'\ngem 'rubocop'\n" > /tmp/rubocop-test/Gemfile
-          cd /tmp/rubocop-test && bundle install
-      - name: Clone guard.nvim
-        run: git clone --depth 1 https://github.com/nvimdev/guard.nvim && mv guard.nvim/lua/guard lua/
+        run: gem install rubocop
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
           busted --lua nlua test/ruby/*_spec.lua
 
+  test-elixir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test-setup
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '27'
+          elixir-version: '1.17'
+      - name: Run tests
+        run: |
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          busted --lua nlua test/elixir/*_spec.lua
+
+  test-nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test-setup
+      - uses: cachix/install-nix-action@v27
+      - name: Install tools
+        run: nix profile install nixpkgs#nixfmt-rfc-style
+      - name: Run tests
+        run: |
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          busted --lua nlua test/nix/*_spec.lua
+
+  test-swift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test-setup
+      - uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '6.0'
+      - name: Run tests
+        run: |
+          export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
+          busted --lua nlua test/swift/*_spec.lua
