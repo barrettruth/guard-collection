@@ -1,8 +1,8 @@
 local lint = require('guard.lint')
 
 return {
-  cmd = 'bundle',
-  args = { 'exec', 'rubocop', '--format', 'json', '--force-exclusion', '--stdin' },
+  cmd = 'rubocop',
+  args = { '--format', 'json', '--force-exclusion', '--stdin' },
   stdin = true,
   fname = true,
   parse = lint.from_json({

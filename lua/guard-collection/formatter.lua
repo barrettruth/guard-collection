@@ -192,8 +192,8 @@ M.prettierd = {
 }
 
 M.rubocop = {
-  cmd = 'bundle',
-  args = { 'exec', 'rubocop', '-A', '-f', 'quiet', '--stderr', '--stdin' },
+  cmd = 'rubocop',
+  args = { '-A', '-f', 'quiet', '--stderr', '--stdin' },
   stdin = true,
   fname = true,
 }
