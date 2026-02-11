@@ -36,7 +36,7 @@
 - [latexindent](https://github.com/cmhughes/latexindent.pl)
 - [mdformat](https://github.com/executablebooks/mdformat)
 - [mixformat](https://github.com/elixir-lang/elixir/)
-- [nixfmt](https://github.com/serokell/nixfmt)
+- [nixfmt](https://github.com/NixOS/nixfmt)
 - [npm_groovy_lint](https://github.com/nvuillam/npm-groovy-lint) as `npm-groovy-lint --format`
 - [npm_groovy_lint_fix](https://github.com/nvuillam/npm-groovy-lint) as `npm-groovy-lint --fix`
 - [ormolu](https://hackage.haskell.org/package/ormolu)

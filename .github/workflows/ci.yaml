@@ -184,7 +184,7 @@ jobs:
       - uses: ./.github/actions/test-setup
       - uses: cachix/install-nix-action@v27
       - name: Install tools
-        run: nix profile install nixpkgs#nixfmt-rfc-style
+        run: nix profile install nixpkgs#nixfmt
       - name: Run tests
         run: |
           export LUA_PATH="lua/?.lua;lua/?/init.lua;$LUA_PATH"
